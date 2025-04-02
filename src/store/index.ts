@@ -1,9 +1,9 @@
 import { createStore } from 'vuex'
 import { RootState } from './types'
 import auth from './modules/auth'
-import products from './modules/products'
-import orders from './modules/orders'
-import customers from './modules/customers'
+import products from '@/store/modules/products'
+import orders from '@/store/modules/orders'
+import customers from '@/store/modules/customers'
 
 export default createStore<RootState>({
   state: {

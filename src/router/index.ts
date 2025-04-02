@@ -3,22 +3,24 @@ import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/views/Home.vue'),
+    meta: { requiresAuth: false }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/Login.vue'),
     meta: { requiresAuth: false }
   },
   {
-    path: '/',
+    path: '/dashboard',
     component: () => import('@/views/Layout.vue'),
     meta: { requiresAuth: true },
     children: [
       {
         path: '',
-        redirect: '/dashboard'
-      },
-      {
-        path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/Dashboard.vue')
       },

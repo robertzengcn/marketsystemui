@@ -222,7 +222,7 @@ export default {
       dialogVisible.value = true
     }
 
-    const handleDelete = (row) => {
+    const handleDelete = () => {
       ElMessageBox.confirm(
         'Are you sure you want to delete this product?',
         'Warning',

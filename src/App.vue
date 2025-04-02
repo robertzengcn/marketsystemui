@@ -1,18 +1,23 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-header>
-        <nav-bar></nav-bar>
-      </el-header>
+    <template v-if="$route.path === '/'">
+      <router-view></router-view>
+    </template>
+    <template v-else>
       <el-container>
-        <el-aside width="200px">
-          <side-menu></side-menu>
-        </el-aside>
-        <el-main>
-          <router-view></router-view>
-        </el-main>
+        <el-header>
+          <nav-bar></nav-bar>
+        </el-header>
+        <el-container>
+          <el-aside width="200px">
+            <side-menu></side-menu>
+          </el-aside>
+          <el-main>
+            <router-view></router-view>
+          </el-main>
+        </el-container>
       </el-container>
-    </el-container>
+    </template>
   </div>
 </template>
 
