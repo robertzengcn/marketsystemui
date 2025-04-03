@@ -1,5 +1,31 @@
 <template>
   <div class="home-container">
+    <!-- Header with Auth Buttons -->
+    <div class="auth-header">
+      <div class="header-content">
+        <div class="logo">
+          <h2>MarketSystem Pro</h2>
+        </div>
+        <div class="header-right">
+          <el-menu
+            mode="horizontal"
+            :router="false"
+            class="nav-menu"
+            @select="handleMenuSelect"
+          >
+            <el-menu-item index="features">Features</el-menu-item>
+            <el-menu-item index="pricing">Pricing</el-menu-item>
+            <el-menu-item index="testimonials">Testimonials</el-menu-item>
+            <el-menu-item index="contact">Contact</el-menu-item>
+          </el-menu>
+          <div class="auth-buttons">
+            <el-button type="success" @click="goToLogin">Login</el-button>
+            <el-button type="info" @click="goToRegister">Register</el-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Hero Section -->
     <div class="hero-section">
       <div class="hero-content">
@@ -172,7 +198,8 @@
     <div class="testimonials-section">
       <h2 class="section-title">What Our Customers Say</h2>
       <el-row :gutter="30">
-        <el-col :xs="24" :sm="8" 
+        <el-col :xs="24" 
+          :sm="8" 
           v-for="(testimonial, index) in testimonials" 
           :key="index">
           <el-card class="testimonial-card">
@@ -212,13 +239,18 @@
                 placeholder="Your name" />
             </el-form-item>
             <el-form-item label="Email">
-              <el-input v-model="contactForm.email" placeholder="Your email" />
+              <el-input v-model="contactForm.email" 
+                placeholder="Your email" />
             </el-form-item>
             <el-form-item label="Company">
-              <el-input v-model="contactForm.company" placeholder="Your company" />
+              <el-input v-model="contactForm.company" 
+                placeholder="Your company" />
             </el-form-item>
             <el-form-item label="Message">
-              <el-input v-model="contactForm.message" type="textarea" rows="4" placeholder="Your message" />
+              <el-input v-model="contactForm.message" 
+                type="textarea" 
+                rows="4" 
+                placeholder="Your message" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitContactForm">Send Message</el-button>
@@ -274,6 +306,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 import {
   DataLine,
   Goods,
@@ -304,6 +337,7 @@ export default defineComponent({
     Share
   },
   setup() {
+    const router = useRouter()
     const contactForm = ref({
       name: '',
       email: '',
@@ -369,6 +403,14 @@ export default defineComponent({
       }
     }
 
+    const goToLogin = () => {
+      router.push('/login')
+    }
+
+    const goToRegister = () => {
+      router.push('/register')
+    }
+
     const submitContactForm = () => {
       // TODO: Implement form submission
       ElMessage.success('Thank you for your message! We will get back to you soon.')
@@ -380,13 +422,23 @@ export default defineComponent({
       }
     }
 
+    const handleMenuSelect = (key: string) => {
+      const element = document.getElementById(key)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+
     return {
       contactForm,
       screenshots,
       testimonials,
       scrollToFeatures,
       contactUs,
-      submitContactForm
+      submitContactForm,
+      goToLogin,
+      goToRegister,
+      handleMenuSelect
     }
   }
 })
@@ -397,12 +449,72 @@ export default defineComponent({
   font-family: 'Arial', sans-serif;
 }
 
+/* Auth Header */
+.auth-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 0 20px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.logo h2 {
+  margin: 0;
+  color: #409EFF;
+  font-size: 1.5rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-menu {
+  border-bottom: none;
+  background: transparent;
+}
+
+.nav-menu .el-menu-item {
+  height: 60px;
+  line-height: 60px;
+  color: #606266;
+}
+
+.nav-menu .el-menu-item:hover {
+  color: #409EFF;
+}
+
+.nav-menu .el-menu-item.is-active {
+  color: #409EFF;
+  border-bottom: 2px solid #409EFF;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
 /* Hero Section */
 .hero-section {
   background: linear-gradient(135deg, #409EFF 0%, #304156 100%);
   color: white;
   padding: 100px 20px;
   text-align: center;
+  margin-top: 60px; /* Add margin to account for fixed header */
 }
 
 .hero-content {
@@ -430,6 +542,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 /* Section Styles */
@@ -462,6 +575,7 @@ export default defineComponent({
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   height: 100%;
   transition: transform 0.3s;
+  margin-bottom: 30px;
 }
 
 .feature-card:hover {
@@ -709,6 +823,70 @@ export default defineComponent({
   .footer-links {
     flex-direction: column;
     gap: 30px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hero-buttons .el-button {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .auth-header {
+    padding: 10px;
+  }
+  
+  .auth-buttons {
+    flex-direction: column;
+  }
+  
+  .auth-buttons .el-button {
+    width: 100px;
+  }
+  
+  .hero-section {
+    margin-top: 100px; /* Increased margin for mobile */
+  }
+
+  .header-content {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 0;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .header-right {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-menu {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .nav-menu .el-menu-item {
+    height: 40px;
+    line-height: 40px;
+  }
+
+  .auth-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .auth-buttons .el-button {
+    width: 100px;
+  }
+
+  .hero-section {
+    margin-top: 140px; /* Increased margin for mobile */
   }
 }
 </style> 
