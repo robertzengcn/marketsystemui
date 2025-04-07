@@ -15,6 +15,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: false }
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/Register.vue'),
+    meta: { requiresAuth: false }
+  },
+  {
     path: '/dashboard',
     component: () => import('@/views/Layout.vue'),
     meta: { requiresAuth: true },

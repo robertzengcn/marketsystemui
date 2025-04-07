@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <template v-if="$route.path === '/'">
+    <template v-if="useSimpleLayout">
       <router-view></router-view>
     </template>
     <template v-else>
@@ -22,7 +22,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import NavBar from '@/components/NavBar.vue'
 import SideMenu from '@/components/SideMenu.vue'
 
@@ -31,6 +32,20 @@ export default defineComponent({
   components: {
     NavBar,
     SideMenu
+  },
+  setup() {
+    const route = useRoute()
+    
+    // List of paths that should use the simple layout (without sidebar and header)
+    const simpleLayoutPaths = ['/', '/login', '/register']
+    
+    const useSimpleLayout = computed(() => {
+      return simpleLayoutPaths.includes(route.path)
+    })
+
+    return {
+      useSimpleLayout
+    }
   }
 })
 </script>

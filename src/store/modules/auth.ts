@@ -42,6 +42,32 @@ const auth: Module<AuthState, RootState> = {
         return false
       }
     },
+    async register({ commit }, userData: { firstName: string; lastName: string; email: string; password: string }) {
+      try {
+        // Replace with actual API call
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        })
+
+        if (!response.ok) {
+          throw new Error('Registration failed')
+        }
+
+        const data = await response.json()
+        // Set user and token after successful registration
+        commit('SET_USER', data.user)
+        commit('SET_TOKEN', data.token)
+        localStorage.setItem('token', data.token)
+        return true
+      } catch (error) {
+        console.error('Registration error:', error)
+        return false
+      }
+    },
     async logout({ commit }) {
       try {
         // Replace with actual API call
