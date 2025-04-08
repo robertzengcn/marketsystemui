@@ -1,6 +1,7 @@
 import { Module } from 'vuex'
 import { AuthState, RootState } from '../types'
 import { User } from '@/types'
+import { API_ENDPOINTS } from '@/config/api'
 
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
@@ -19,8 +20,7 @@ const auth: Module<AuthState, RootState> = {
   actions: {
     async login({ commit }, credentials: { email: string; password: string }) {
       try {
-        // Replace with actual API call
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -44,8 +44,7 @@ const auth: Module<AuthState, RootState> = {
     },
     async register({ commit }, userData: { firstName: string; lastName: string; email: string; password: string }) {
       try {
-        // Replace with actual API call
-        const response = await fetch('/api/auth/register', {
+        const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -58,7 +57,6 @@ const auth: Module<AuthState, RootState> = {
         }
 
         const data = await response.json()
-        // Set user and token after successful registration
         commit('SET_USER', data.user)
         commit('SET_TOKEN', data.token)
         localStorage.setItem('token', data.token)
@@ -70,8 +68,7 @@ const auth: Module<AuthState, RootState> = {
     },
     async logout({ commit }) {
       try {
-        // Replace with actual API call
-        await fetch('/api/auth/logout', {
+        await fetch(API_ENDPOINTS.AUTH.LOGOUT, {
           method: 'POST'
         })
       } catch (error) {
@@ -87,8 +84,7 @@ const auth: Module<AuthState, RootState> = {
       if (!token) return false
 
       try {
-        // Replace with actual API call
-        const response = await fetch('/api/auth/me', {
+        const response = await fetch(API_ENDPOINTS.AUTH.ME, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
