@@ -11,8 +11,8 @@
         label-width="80px"
         @submit.prevent="handleSubmit"
       >
-        <el-form-item label="Email" prop="email">
-          <el-input v-model="form.email" type="email" />
+        <el-form-item label="Email" prop="username">
+          <el-input v-model="form.username" type="email" />
         </el-form-item>
         <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" type="password" />
@@ -34,7 +34,7 @@ import { useStore } from 'vuex'
 import type { FormInstance, FormRules } from 'element-plus'
 
 interface LoginForm {
-  email: string
+  username: string
   password: string
 }
 
@@ -47,12 +47,12 @@ export default defineComponent({
     const loading = ref(false)
 
     const form = reactive<LoginForm>({
-      email: '',
+      username: '',
       password: ''
     })
 
     const rules = reactive<FormRules>({
-      email: [
+      username: [
         { required: true, message: 'Please input email address', trigger: 'blur' },
         { type: 'email', message: 'Please input correct email address', trigger: 'blur' }
       ],

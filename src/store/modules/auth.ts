@@ -18,24 +18,25 @@ const auth: Module<AuthState, RootState> = {
     }
   },
   actions: {
-    async login({ commit }, credentials: { email: string; password: string }) {
+    async login({ commit }, credentials: { username: string; password: string }) {
       try {
+        const formData = new FormData()
+        formData.append('username', credentials.username)
+        formData.append('password', credentials.password)
+
         const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(credentials)
+          body: formData
         })
 
         if (!response.ok) {
           throw new Error('Login failed')
         }
 
-        const data = await response.json()
-        commit('SET_USER', data.user)
-        commit('SET_TOKEN', data.token)
-        localStorage.setItem('token', data.token)
+        const { data } = await response.json()
+        commit('SET_USER', { username: credentials.username }) // You might want to adjust this based on actual user data
+        commit('SET_TOKEN', data.Token)
+        localStorage.setItem('token', data.Token)
         return true
       } catch (error) {
         console.error('Login error:', error)

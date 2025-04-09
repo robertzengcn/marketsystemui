@@ -6,6 +6,10 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
+// Debug log
+console.log('Environment:', import.meta.env)
+console.log('API Base URL:', import.meta.env.VITE_API_BASE_URL)
+
 const app = createApp(App)
 
 // Register all Element Plus icons
