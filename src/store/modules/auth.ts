@@ -2,6 +2,7 @@ import { Module } from 'vuex'
 import { AuthState, RootState } from '../types'
 import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
+import router from '../../router'
 
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
@@ -34,9 +35,24 @@ const auth: Module<AuthState, RootState> = {
         }
 
         const { data } = await response.json()
-        commit('SET_USER', { username: credentials.username }) // You might want to adjust this based on actual user data
+        const userData = { username: credentials.username }
+        
+        commit('SET_USER', userData)
         commit('SET_TOKEN', data.Token)
         localStorage.setItem('token', data.Token)
+
+        // Check URL parameters
+        const urlParams = new URLSearchParams(window.location.search)
+        const appParam = urlParams.get('app')
+
+        if (appParam === 'social-market') {
+          // Redirect to app URL scheme
+          window.location.href = `social-marketing://auth?token=${data.Token}`
+        } 
+        else {
+          // Default route to dashboard when no app parameter is present
+          router.push('/dashboard')
+        }
         return true
       } catch (error) {
         console.error('Login error:', error)
