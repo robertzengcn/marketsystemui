@@ -2,6 +2,7 @@ import { Module } from 'vuex'
 import { AuthState, RootState } from '../types'
 import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
+import { sendToElectron } from '@/utils/electron'
 
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
@@ -34,9 +35,27 @@ const auth: Module<AuthState, RootState> = {
         }
 
         const { data } = await response.json()
-        commit('SET_USER', { username: credentials.username }) // You might want to adjust this based on actual user data
+        const userData = { username: credentials.username }
+        
+        commit('SET_USER', userData)
         commit('SET_TOKEN', data.Token)
         localStorage.setItem('token', data.Token)
+
+        // Check URL parameters
+        const urlParams = new URLSearchParams(window.location.search)
+        const appParam = urlParams.get('app')
+
+        if (appParam === 'social-market') {
+          // Redirect to app URL scheme
+          window.location.href = `social-marketing://auth?token=${data.Token}`
+        } else {
+          // Send login success data to Electron if running in Electron
+          sendToElectron({
+            token: data.Token,
+            user: userData
+          })
+        }
+
         return true
       } catch (error) {
         console.error('Login error:', error)
