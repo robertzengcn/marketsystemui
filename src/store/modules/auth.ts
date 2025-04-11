@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import { AuthState, RootState } from '../types'
 import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
-import { sendToElectron } from '@/utils/electron'
+import router from '../../router'
 
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
@@ -48,14 +48,11 @@ const auth: Module<AuthState, RootState> = {
         if (appParam === 'social-market') {
           // Redirect to app URL scheme
           window.location.href = `social-marketing://auth?token=${data.Token}`
-        } else {
-          // Send login success data to Electron if running in Electron
-          sendToElectron({
-            token: data.Token,
-            user: userData
-          })
+        } 
+        else {
+          // Default route to dashboard when no app parameter is present
+          router.push('/dashboard')
         }
-
         return true
       } catch (error) {
         console.error('Login error:', error)
