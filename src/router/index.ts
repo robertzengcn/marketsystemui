@@ -15,6 +15,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: false }
   },
   {
+    path: '/login-success',
+    name: 'LoginSuccess',
+    component: () => import('@/views/LoginSuccess.vue'),
+    meta: { requiresAuth: false }
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import('@/views/Register.vue'),
@@ -27,6 +33,10 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
+        redirect: '/dashboard'
+      },
+      {
+        path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/Dashboard.vue')
       },

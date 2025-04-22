@@ -36,7 +36,7 @@ const auth: Module<AuthState, RootState> = {
 
         const { data } = await response.json()
         const userData = { username: credentials.username }
-        
+
         commit('SET_USER', userData)
         commit('SET_TOKEN', data.Token)
         localStorage.setItem('token', data.Token)
@@ -45,13 +45,23 @@ const auth: Module<AuthState, RootState> = {
         const urlParams = new URLSearchParams(window.location.search)
         const appParam = urlParams.get('app')
 
-        if (appParam === 'social-market') {
+        if (appParam === 'socialmarketing') {
           // Redirect to app URL scheme
-          window.location.href = `social-marketing://auth?token=${data.Token}`
-        } 
+          const appUrl = `socialmarketing://auth?token=${data.Token}`
+          window.location.href = appUrl
+         console.log("redirecting to app:"+appUrl)
+          // Redirect to success page first, then handle app redirect
+          // router.push('/login/success').then(() => {
+          //   setTimeout(() => {
+          //     window.location.href = `socialmarketing://auth?token=${data.Token}`
+          //   }, 1500) // Brief delay to show success page before redirect
+          // })
+        }
         else {
           // Default route to dashboard when no app parameter is present
-          router.push('/dashboard')
+          const appUrl = `socialmarketing://token_${data.Token}`
+          window.location.href = appUrl
+          // router.push('/dashboard')
         }
         return true
       } catch (error) {
