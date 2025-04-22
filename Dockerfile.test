@@ -7,7 +7,7 @@ WORKDIR /app
 # RUN apk add --no-cache git openssh-client
 
 # Configure Git to trust the repository directory
-RUN git config --global --add safe.directory /app
+# RUN git config --global --add safe.directory /app
 
 # Copy package files
 COPY package.json yarn.lock ./
