@@ -4,14 +4,14 @@ pipeline {
     stages {
        stage("provide config file"){
         steps{
-      configFileProvider([configFile(fileId: 'amiga-marketing-conf', targetLocation: 'conf/app.conf')]) {   
+      configFileProvider([configFile(fileId: 'marketsystemui-test.env.test', targetLocation: '.env.test')]) {   
              }
       }
       }
         stage('build docker composer') {
             steps {
-                 sh 'docker image rm amigamarketing ||true'
-                 sh 'docker build -t amigamarketing .' 
+                 sh 'docker image rm marketsystemui ||true'
+                 sh 'docker build -f Dockerfile.test -t marketsystemui .' 
             }
         }
     }
