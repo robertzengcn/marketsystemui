@@ -67,7 +67,7 @@ export default defineComponent({
       confirmPassword: ''
     })
 
-    const validatePass = (rule: any, value: string, callback: any) => {
+    const validatePass = (_rule: any, value: string, callback: any) => {
       if (value === '') {
         callback(new Error('Please input the password'))
       } else {
@@ -78,7 +78,7 @@ export default defineComponent({
       }
     }
 
-    const validatePass2 = (rule: any, value: string, callback: any) => {
+    const validatePass2 = (_rule: any, value: string, callback: any) => {
       if (value === '') {
         callback(new Error('Please input the password again'))
       } else if (value !== form.password) {

@@ -2,7 +2,6 @@ import { Module } from 'vuex'
 import { AuthState, RootState } from '../types'
 import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
-import router from '../../router'
 
 const auth: Module<AuthState, RootState> = {
   namespaced: true,

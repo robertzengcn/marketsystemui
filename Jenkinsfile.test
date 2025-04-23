@@ -1,0 +1,18 @@
+pipeline {
+    agent { label 'jenkins-agent' } 
+
+    stages {
+       stage("provide config file"){
+        steps{
+      configFileProvider([configFile(fileId: 'marketsystemui-test.env.test', targetLocation: '.env.test')]) {   
+             }
+      }
+      }
+        stage('build docker composer') {
+            steps {
+                 sh 'docker image rm marketsystemui ||true'
+                 sh 'docker build -f Dockerfile.test -t marketsystemui .' 
+            }
+        }
+    }
+}

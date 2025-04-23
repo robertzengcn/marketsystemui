@@ -1,7 +1,13 @@
 # Build stage
-FROM node:18-alpine as build-stage
+FROM node:20-alpine as build-stage
 
 WORKDIR /app
+
+# Install Git and SSH
+# RUN apk add --no-cache git openssh-client
+
+# Configure Git to trust the repository directory
+# RUN git config --global --add safe.directory /app
 
 # Copy package files
 COPY package.json yarn.lock ./
@@ -27,5 +33,7 @@ COPY nginx.test.conf /etc/nginx/conf.d/default.conf
 # Expose port 80
 EXPOSE 80
 
+WORKDIR /app
+
 # Start nginx
-CMD ["nginx", "-g", "daemon off;"] 
+CMD ["nginx", "-g", "daemon off;"]
