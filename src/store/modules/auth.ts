@@ -34,7 +34,13 @@ const auth: Module<AuthState, RootState> = {
           throw new Error('Login failed')
         }
 
-        const { data } = await response.json()
+        const { data,status,msg } = await response.json()
+        if(!status){
+          throw new Error('Login failed:'+msg)
+          // console.error('Login error:', data.msg)
+
+          // return false
+        }
         const userData = { username: credentials.username }
 
         commit('SET_USER', userData)
