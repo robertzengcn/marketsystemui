@@ -3,6 +3,7 @@ import { AuthState, RootState } from '../types'
 import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
 
+const APP_MARKETSYSTEM_NAME = import.meta.env.VITE_APP_MARKETSYSTEM_NAME
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
   state: {
@@ -50,9 +51,9 @@ const auth: Module<AuthState, RootState> = {
         const urlParams = new URLSearchParams(window.location.search)
         const appParam = urlParams.get('app')
 
-        if (appParam === 'socialmarketing') {
+        if (appParam === APP_MARKETSYSTEM_NAME) {
           // Redirect to app URL scheme
-          const appUrl = `socialmarketing://auth?token=${data.Token}`
+          const appUrl = APP_MARKETSYSTEM_NAME+`://auth?token=${data.Token}`
           window.location.href = appUrl
          console.log("redirecting to app:"+appUrl)
           // Redirect to success page first, then handle app redirect
