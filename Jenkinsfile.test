@@ -10,8 +10,8 @@ pipeline {
       }
         stage('build docker composer') {
             steps {
-                 sh 'docker image rm marketsystemui ||true'
-                 sh 'docker build -f Dockerfile.test -t marketsystemui .' 
+                 sh 'docker image rm marketsystemuitest ||true'
+                 sh 'docker build -f Dockerfile.test -t marketsystemuitest .' 
             }
         }
     }
