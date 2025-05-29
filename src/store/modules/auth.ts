@@ -2,6 +2,7 @@ import { Module } from 'vuex'
 import { AuthState, RootState } from '../types'
 import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
+import { th } from 'element-plus/es/locales.mjs'
 
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
@@ -21,8 +22,8 @@ const auth: Module<AuthState, RootState> = {
     async login({ commit }, credentials: { username: string; password: string }) {
       try {
         const formData = new FormData()
-        formData.append('username', credentials.username)
-        formData.append('password', credentials.password)
+        formData.append('username', credentials.username.trim())
+        formData.append('password', credentials.password.trim())
 
         const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
           method: 'POST',
@@ -33,39 +34,23 @@ const auth: Module<AuthState, RootState> = {
           throw new Error('Login failed')
         }
 
-        const { data } = await response.json()
+        const { data,status,msg } = await response.json()
+        if(!status){
+
+          throw new Error(msg || 'Login failed')
+        }
         const userData = { username: credentials.username }
 
         commit('SET_USER', userData)
         commit('SET_TOKEN', data.Token)
         localStorage.setItem('token', data.Token)
 
-        // Check URL parameters
-        const urlParams = new URLSearchParams(window.location.search)
-        const appParam = urlParams.get('app')
-
-        if (appParam === 'socialmarketing') {
-          // Redirect to app URL scheme
-          const appUrl = `socialmarketing://auth?token=${data.Token}`
-          window.location.href = appUrl
-         console.log("redirecting to app:"+appUrl)
-          // Redirect to success page first, then handle app redirect
-          // router.push('/login/success').then(() => {
-          //   setTimeout(() => {
-          //     window.location.href = `socialmarketing://auth?token=${data.Token}`
-          //   }, 1500) // Brief delay to show success page before redirect
-          // })
-        }
-        else {
-          // Default route to dashboard when no app parameter is present
-          const appUrl = `socialmarketing://token_${data.Token}`
-          window.location.href = appUrl
-          // router.push('/dashboard')
-        }
+       
         return true
       } catch (error) {
         console.error('Login error:', error)
-        return false
+        throw error // Re-throw the error to be handled by the caller
+        //return false
       }
     },
     async register({ commit }, userData: { firstName: string; lastName: string; email: string; password: string }) {
