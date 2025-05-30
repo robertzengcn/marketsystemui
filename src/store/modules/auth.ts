@@ -2,9 +2,9 @@ import { Module } from 'vuex'
 import { AuthState, RootState } from '../types'
 import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
-import { th } from 'element-plus/es/locales.mjs'
+//import { th } from 'element-plus/es/locales.mjs'
 
-const APP_MARKETSYSTEM_NAME = import.meta.env.VITE_APP_MARKETSYSTEM_NAME
+//const APP_MARKETSYSTEM_NAME = import.meta.env.VITE_APP_MARKETSYSTEM_NAME
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
   state: {
