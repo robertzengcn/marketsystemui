@@ -31,6 +31,7 @@
 import { defineComponent, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 
 interface LoginForm {
@@ -71,7 +72,14 @@ export default defineComponent({
         await store.dispatch('auth/login', form)
         router.push('/dashboard')
       } catch (error) {
+        if (error instanceof Error) {
+          ElMessage.error(error.message)
+        } else {
+          ElMessage.error('Login failed. Please check your credentials and try again.')
+        }
+        ElMessage.error('Login failed. Please check your credentials and try again.')
         console.error('Login failed:', error)
+        return false
       } finally {
         loading.value = false
       }
