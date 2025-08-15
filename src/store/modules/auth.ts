@@ -4,6 +4,7 @@ import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
 
 const APP_MARKETSYSTEM_NAME = import.meta.env.VITE_APP_MARKETSYSTEM_NAME
+const APP_AIFETCHLY_NAME = import.meta.env.VITE_APP_AIFETCHLY_NAME
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
   state: {
@@ -50,10 +51,11 @@ const auth: Module<AuthState, RootState> = {
         // Check URL parameters
         const urlParams = new URLSearchParams(window.location.search)
         const appParam = urlParams.get('app')
+        const supportedAppNames = [APP_MARKETSYSTEM_NAME, APP_AIFETCHLY_NAME]
 
-        if (appParam === APP_MARKETSYSTEM_NAME) {
+        if (supportedAppNames.includes(appParam)) {
           // Redirect to app URL scheme
-          const appUrl = APP_MARKETSYSTEM_NAME+`://auth?token=${data.Token}`
+          const appUrl = appParam+`://auth?token=${data.Token}`
           window.location.href = appUrl
          console.log("redirecting to app:"+appUrl)
           // Redirect to success page first, then handle app redirect
