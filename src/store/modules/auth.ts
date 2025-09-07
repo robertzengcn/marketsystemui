@@ -65,12 +65,12 @@ const auth: Module<AuthState, RootState> = {
           //   }, 1500) // Brief delay to show success page before redirect
           // })
         }
-        else {
-          // Default route to dashboard when no app parameter is present
-          const appUrl = `socialmarketing://token_${data.Token}`
-          window.location.href = appUrl
-          // router.push('/dashboard')
-        }
+        // else {
+        //   // Default route to dashboard when no app parameter is present
+        //   const appUrl = `socialmarketing://token_${data.Token}`
+        //   window.location.href = appUrl
+        //   // router.push('/dashboard')
+        // }
         return true
       } catch (error) {
         console.error('Login error:', error)
