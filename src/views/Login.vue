@@ -93,8 +93,14 @@ export default defineComponent({
 
         }
       } catch (error) {
+        if (error instanceof Error) {
+          ElMessage.error(error.message)
+        } else {
+          ElMessage.error('Login failed. Please check your credentials and try again.')
+        }
+        ElMessage.error('Login failed. Please check your credentials and try again.')
         console.error('Login failed:', error)
-        ElMessage.error(error instanceof Error ? error.message : 'Login failed')
+        return false
       } finally {
         loading.value = false
       }
