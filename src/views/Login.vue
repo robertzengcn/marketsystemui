@@ -4,13 +4,7 @@
       <template #header>
         <h2>Login</h2>
       </template>
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-width="80px"
-        @submit.prevent="handleSubmit"
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="80px" @submit.prevent="handleSubmit">
         <el-form-item label="Email" prop="username">
           <el-input v-model="form.username" type="email" />
         </el-form-item>
@@ -69,8 +63,35 @@ export default defineComponent({
       try {
         await formRef.value.validate()
         loading.value = true
-        await store.dispatch('auth/login', form)
-        router.push('/dashboard')
+        const res = await store.dispatch('auth/login', form)
+        if (res) {
+          
+          // Check URL parameters
+          const urlParams = new URLSearchParams(window.location.search)
+          const appParam = urlParams.get('app')
+
+          if (appParam === 'socialmarketing') {
+            const token = localStorage.getItem('token')
+            // Redirect to app URL scheme
+            const appUrl = `socialmarketing://auth?token=${token}`
+            window.location.href = appUrl
+            console.log("redirecting to app:" + appUrl)
+            // Redirect to success page first, then handle app redirect
+            // router.push('/login/success').then(() => {
+            //   setTimeout(() => {
+            //     window.location.href = `socialmarketing://auth?token=${token}`
+            //   }, 1500) // Brief delay to show success page before redirect
+            // })
+          }
+          else {
+            // Default route to dashboard when no app parameter is present
+            // const appUrl = `socialmarketing://token_${data.Token}`
+            // window.location.href = appUrl
+            // router.push('/dashboard')
+            router.push('/dashboard')
+          }
+
+        }
       } catch (error) {
         if (error instanceof Error) {
           ElMessage.error(error.message)
@@ -114,4 +135,4 @@ h2 {
   text-align: center;
   color: #409EFF;
 }
-</style> 
+</style>

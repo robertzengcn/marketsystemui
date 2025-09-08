@@ -2,6 +2,7 @@ import { Module } from 'vuex'
 import { AuthState, RootState } from '../types'
 import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
+//imD#1Y$Sd7fRs*Vxf6port { th } from 'element-plus/es/locales.mjs'
 
 const APP_MARKETSYSTEM_NAME = import.meta.env.VITE_APP_MARKETSYSTEM_NAME
 const APP_AIFETCHLY_NAME = import.meta.env.VITE_APP_AIFETCHLY_NAME
@@ -23,8 +24,8 @@ const auth: Module<AuthState, RootState> = {
     async login({ commit }, credentials: { username: string; password: string }) {
       try {
         const formData = new FormData()
-        formData.append('username', credentials.username)
-        formData.append('password', credentials.password)
+        formData.append('username', credentials.username.trim())
+        formData.append('password', credentials.password.trim())
 
         const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
           method: 'POST',
@@ -37,10 +38,8 @@ const auth: Module<AuthState, RootState> = {
 
         const { data,status,msg } = await response.json()
         if(!status){
-          throw new Error('Login failed:'+msg)
-          // console.error('Login error:', data.msg)
 
-          // return false
+          throw new Error(msg || 'Login failed')
         }
         const userData = { username: credentials.username }
 
@@ -74,7 +73,8 @@ const auth: Module<AuthState, RootState> = {
         return true
       } catch (error) {
         console.error('Login error:', error)
-        return false
+        throw error // Re-throw the error to be handled by the caller
+        //return false
       }
     },
     async register({ commit }, userData: { firstName: string; lastName: string; email: string; password: string }) {

@@ -8,6 +8,12 @@ pipeline {
              }
       }
       }
+            stage("provide nginx config file"){
+        steps{
+      configFileProvider([configFile(fileId: 'marketsystemui-test.nginx.test.conf', targetLocation: 'nginx.test.conf')]) {   
+             }
+      }
+      }
         stage('build docker composer') {
             steps {
                  sh 'docker image rm marketsystemuitest ||true'
