@@ -4,8 +4,8 @@ import { User } from '@/types'
 import { API_ENDPOINTS } from '@/config/api'
 //imD#1Y$Sd7fRs*Vxf6port { th } from 'element-plus/es/locales.mjs'
 
-const APP_MARKETSYSTEM_NAME = import.meta.env.VITE_APP_MARKETSYSTEM_NAME
-const APP_AIFETCHLY_NAME = import.meta.env.VITE_APP_AIFETCHLY_NAME
+// const APP_MARKETSYSTEM_NAME = import.meta.env.VITE_APP_MARKETSYSTEM_NAME
+// const APP_AIFETCHLY_NAME = import.meta.env.VITE_APP_AIFETCHLY_NAME
 const auth: Module<AuthState, RootState> = {
   namespaced: true,
   state: {
