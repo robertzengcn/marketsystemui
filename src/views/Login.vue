@@ -56,6 +56,8 @@ export default defineComponent({
         { min: 6, message: 'Password length should be at least 6 characters', trigger: 'blur' }
       ]
     })
+    const APP_MARKETSYSTEM_NAME = import.meta.env.VITE_APP_MARKETSYSTEM_NAME
+    const APP_AIFETCHLY_NAME = import.meta.env.VITE_APP_AIFETCHLY_NAME
 
     const handleSubmit = async () => {
       if (!formRef.value) return
@@ -70,28 +72,41 @@ export default defineComponent({
           const urlParams = new URLSearchParams(window.location.search)
           const appParam = urlParams.get('app')
 
-          if (appParam === 'socialmarketing') {
-            const token = localStorage.getItem('token')
-            // Redirect to app URL scheme
-            const appUrl = `socialmarketing://auth?token=${token}`
-            window.location.href = appUrl
-            console.log("redirecting to app:" + appUrl)
-            // Redirect to success page first, then handle app redirect
-            // router.push('/login/success').then(() => {
-            //   setTimeout(() => {
-            //     window.location.href = `socialmarketing://auth?token=${token}`
-            //   }, 1500) // Brief delay to show success page before redirect
-            // })
-          }
-          else {
-            // Default route to dashboard when no app parameter is present
-            // const appUrl = `socialmarketing://token_${data.Token}`
-            // window.location.href = appUrl
-            // router.push('/dashboard')
-            router.push('/dashboard')
-          }
+        const supportedAppNames = [APP_MARKETSYSTEM_NAME, APP_AIFETCHLY_NAME]
 
+        if (supportedAppNames.includes(appParam)) {
+          const token = localStorage.getItem('token')
+          const appUrl = appParam+`://auth?token=${token}`
+          window.location.href = appUrl
+          console.log("redirecting to app:"+appUrl)
+          //router.push('/dashboard')
+        }else{
+          router.push('/dashboard')
         }
+        // else {
+          // if (appParam === 'socialmarketing') {
+          //   const token = localStorage.getItem('token')
+          //   // Redirect to app URL scheme
+          //   const appUrl = `socialmarketing://auth?token=${token}`
+          //   window.location.href = appUrl
+          //   console.log("redirecting to app:" + appUrl)
+          //   // Redirect to success page first, then handle app redirect
+          //   // router.push('/login/success').then(() => {
+          //   //   setTimeout(() => {
+          //   //     window.location.href = `socialmarketing://auth?token=${token}`
+          //   //   }, 1500) // Brief delay to show success page before redirect
+          //   // })
+          // }
+          // else {
+          //   // Default route to dashboard when no app parameter is present
+          //   // const appUrl = `socialmarketing://token_${data.Token}`
+          //   // window.location.href = appUrl
+          //   // router.push('/dashboard')
+          //   router.push('/dashboard')
+          // }
+
+        // }
+      }
       } catch (error) {
         if (error instanceof Error) {
           ElMessage.error(error.message)

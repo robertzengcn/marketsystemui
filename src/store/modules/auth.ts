@@ -48,22 +48,22 @@ const auth: Module<AuthState, RootState> = {
         localStorage.setItem('token', data.Token)
 
         // Check URL parameters
-        const urlParams = new URLSearchParams(window.location.search)
-        const appParam = urlParams.get('app')
-        const supportedAppNames = [APP_MARKETSYSTEM_NAME, APP_AIFETCHLY_NAME]
+        // const urlParams = new URLSearchParams(window.location.search)
+        // const appParam = urlParams.get('app')
+        // const supportedAppNames = [APP_MARKETSYSTEM_NAME, APP_AIFETCHLY_NAME]
 
-        if (supportedAppNames.includes(appParam)) {
-          // Redirect to app URL scheme
-          const appUrl = appParam+`://auth?token=${data.Token}`
-          window.location.href = appUrl
-         console.log("redirecting to app:"+appUrl)
-          // Redirect to success page first, then handle app redirect
-          // router.push('/login/success').then(() => {
-          //   setTimeout(() => {
-          //     window.location.href = `socialmarketing://auth?token=${data.Token}`
-          //   }, 1500) // Brief delay to show success page before redirect
-          // })
-        }
+        // if (supportedAppNames.includes(appParam)) {
+        //   // Redirect to app URL scheme
+        //   const appUrl = appParam+`://auth?token=${data.Token}`
+        //   window.location.href = appUrl
+        //  console.log("redirecting to app:"+appUrl)
+        //   // Redirect to success page first, then handle app redirect
+        //   // router.push('/login/success').then(() => {
+        //   //   setTimeout(() => {
+        //   //     window.location.href = `socialmarketing://auth?token=${data.Token}`
+        //   //   }, 1500) // Brief delay to show success page before redirect
+        //   // })
+        // }
         // else {
         //   // Default route to dashboard when no app parameter is present
         //   const appUrl = `socialmarketing://token_${data.Token}`
